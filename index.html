@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OMDB Movie Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="search-panel" aria-labelledby="page-title">
+        <p class="kicker">OMDB lookup</p>
+        <h1 id="page-title">Find the film card that matters.</h1>
+        <form class="search-form" id="search-form">
+          <label for="movie-query">Movie title</label>
+          <div class="search-row">
+            <input
+              id="movie-query"
+              name="q"
+              type="search"
+              autocomplete="off"
+              placeholder="Try Inception, Heat, Arrival"
+            >
+            <button type="submit" id="search-button">Search</button>
+          </div>
+        </form>
+        <p class="status-message" id="status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="result-panel" id="result" aria-label="Movie result">
+        <div class="empty-state">
+          <span class="empty-mark" aria-hidden="true">35</span>
+          <p>Search by exact or familiar movie title to load the OMDB detail card.</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

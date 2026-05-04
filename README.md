@@ -39,6 +39,28 @@ Do **not** attempt to push changes directly to this repository or any of its ori
 
 ---
 
+## Running the App
+
+1. Create a local runtime config:
+
+   ```bash
+   cp config.example.js config.js
+   ```
+
+2. Add your OMDB API key to `config.js`:
+
+   ```js
+   window.OMDB_CONFIG = {
+     apiKey: "your-omdb-api-key"
+   };
+   ```
+
+3. Open `index.html` in a browser, or serve the folder with any static server.
+
+`config.js` is ignored by Git so private keys are not committed. For GitHub Pages, provide a public/static `config.js` during deployment because browser apps cannot keep API keys secret.
+
+---
+
 ## Functional Requirements
 
 1. **Movie Search Input**
