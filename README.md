@@ -1,17 +1,29 @@
-# Reel Index
+<p align="center">
+  <br/>
+  <b>Reel Index</b><br>
+  <i>A small movie search app built on the OMDb API.</i>
+</p>
 
-A small movie search app built on the [OMDb API](https://www.omdbapi.com/). Type a title, browse a grid of posters, click one to see the full plot, ratings, and credits.
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS" />
+  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="JavaScript" />
+</p>
 
-**Live demo:** https://inaolol.github.io/omdb-project/
+
+[Live demo](https://inaolol.github.io/omdb-project/)
 
 
-Note: A free-tier OMDb API key is deliberately included in `config.js` so the live demo work instantly for reviewers. You can use your own key by copying `config.example.js` to `config.js` and updating the value.
+
+Note: A free-tier OMDb API key is deliberately included in `config.js` so the live demo works instantly for reviewers. You can use your own key by copying `config.example.js` to `config.js` and updating the value.
 
 ## Screenshots
 
-- [Home / empty state](docs/examples/home.png)
-- [Search results grid](docs/examples/results.png)
-- [Detail overlay](docs/examples/detail.png)
+![Home / empty state](docs/examples/home.png)
+
+![Search results grid](docs/examples/results.png)
+
+![Detail overlay](docs/examples/detail.png)
 
 
 ## Features
