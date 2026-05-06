@@ -38,6 +38,7 @@ Note: A free-tier OMDb API key is deliberately included in `config.js` so the li
 ### Non-functional (Architecture & Performance)
 - **Vanilla Tech Stack** Pure HTML/CSS/JS. No framework, no build step, no transpile. Runs natively in any modern browser.
 - **Performance Optimized:** `searchToken` discards stale HTTP responses to prevent UI flicker. Poster images are lazy-loaded (`loading="lazy"`), and DOM thrashing is avoided through single `innerHTML` writes per render phase.
+- **API Caching:** An in-memory LRU-style cache intercepts repeated network requests (like re-opening a poster or clicking a recent search) to serve results instantly and conserve the OMDb API free-tier quota.
 - **Maintainable & Testable:** Core URL builders and view-model creators are pure functions isolated from the DOM. `fetch` and document objects are injected, allowing unit tests (`npm test`) to run instantly without a browser.
 - **Responsive & Secure:** Fluid layout using CSS Grid (`auto-fill` / `minmax`) for mobile-first design. All user-facing strings are HTML-escaped to prevent XSS injection from API responses.
 

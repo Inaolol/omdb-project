@@ -90,7 +90,11 @@
     const json = await response.json();
     if (json.Response === "False") {
       const error = new Error(json.Error || "No matches.");
-      error.code = json.Error === "Movie not found!" ? "NO_RESULTS" : "API";
+      error.code = json.Error === "Movie not found!"
+        ? "NO_RESULTS"
+        : json.Error === "Too many results."
+          ? "TOO_BROAD"
+          : "API";
       throw error;
     }
     return { results: json.Search || [], total: Number(json.totalResults) || 0 };
@@ -218,6 +222,25 @@
       </div>`;
   }
 
+  function tooBroadHtml(query, hasFilters) {
+    const suggestion = hasFilters
+      ? "Type a more specific title."
+      : "Add a year, pick a type, or type a more specific title.";
+    return `
+      <div class="state state-empty">
+        <div class="state-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M10 18h44M10 32h44M10 46h28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M48 40l8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="44" cy="36" r="12" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+        </div>
+        <h2 class="state-title">Search is too broad</h2>
+        <p class="state-body">OMDb returned too many matches for "<em>${escapeHtml(query)}</em>". ${suggestion}</p>
+        <button class="btn-secondary" type="button" data-action="clear">Clear search</button>
+      </div>`;
+  }
+
   function cardHtml(movie, index) {
     const delay = Math.min(index, 18) * 24;
     return `
@@ -340,6 +363,20 @@
       catch (e) { return null; }
     }
 
+    const responseCache = new Map();
+    async function cachedFetch(url) {
+      if (responseCache.has(url)) {
+        return { ok: true, status: 200, json: async () => responseCache.get(url) };
+      }
+      const response = await root.fetch(url);
+      if (response.ok) {
+        const data = await response.clone().json();
+        responseCache.set(url, data);
+        if (responseCache.size > 100) responseCache.delete(responseCache.keys().next().value); // Keep max 100 items
+      }
+      return response;
+    }
+
     function renderRecent() {
       if (!recentList.length) { recent.hidden = true; recentRow.innerHTML = ""; return; }
       recent.hidden = false;
@@ -375,7 +412,7 @@
       results.innerHTML = loadingStateHtml();
 
       try {
-        const { results: items, total } = await omdbSearch(q, { year, type }, apiKey, root.fetch.bind(root));
+        const { results: items, total } = await omdbSearch(q, { year, type }, apiKey, cachedFetch);
         if (token !== searchToken) return;
         lastResults = items;
         if (!items.length) {
@@ -391,6 +428,8 @@
         if (token !== searchToken) return;
         if (e.code === "NO_RESULTS") {
           results.innerHTML = noResultsHtml(q);
+        } else if (e.code === "TOO_BROAD") {
+          results.innerHTML = tooBroadHtml(q, year || (type && type !== "any"));
         } else {
           results.innerHTML = errorStateHtml(e.message || "Request failed");
         }
@@ -435,7 +474,7 @@
       closeEl && closeEl.focus();
 
       try {
-        const data = await omdbDetail(imdbID, apiKey, root.fetch.bind(root));
+        const data = await omdbDetail(imdbID, apiKey, cachedFetch);
         const body = overlayRoot.querySelector("[data-overlay-body]");
         if (body) body.innerHTML = detailBodyHtml(data);
       } catch (e) {

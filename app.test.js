@@ -7,6 +7,7 @@ const {
   ensureApiKey,
   getApiKey,
   normalizeQuery,
+  omdbSearch,
   shouldSkipDuplicateSearch,
   updateSearchParam,
 } = require("./app.js");
@@ -32,6 +33,21 @@ test("builds an OMDB title search URL", () => {
   const url = buildOmdbUrl("abc123", "The Matrix");
 
   assert.equal(url, "https://www.omdbapi.com/?apikey=abc123&t=The%20Matrix");
+});
+
+test("treats broad OMDB searches as a distinct refinement error", async () => {
+  const fetchImpl = async () => ({
+    ok: true,
+    json: async () => ({
+      Response: "False",
+      Error: "Too many results.",
+    }),
+  });
+
+  await assert.rejects(
+    () => omdbSearch("the", {}, "abc123", fetchImpl),
+    (error) => error.code === "TOO_BROAD" && error.message === "Too many results."
+  );
 });
 
 test("maps successful OMDB responses into the required movie details", () => {
