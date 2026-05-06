@@ -9,6 +9,14 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='none' stroke='%23E8B23C' stroke-width='1'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23E8B23C' stroke-width='1'/><circle cx='16' cy='16' r='3' fill='%23E8B23C'/><circle cx='16' cy='3.5' r='1.4' fill='%23E8B23C'/><circle cx='28.5' cy='16' r='1.4' fill='%23E8B23C'/><circle cx='16' cy='28.5' r='1.4' fill='%23E8B23C'/><circle cx='3.5' cy='16' r='1.4' fill='%23E8B23C'/></svg>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
     <link rel="stylesheet" href="styles.css">
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem("rx.theme"));
+          if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+        } catch (e) {}
+      })();
+    </script>
     <script src="config.js"></script>
     <script src="app.js" defer></script>
   </head>
@@ -16,6 +24,19 @@
     <div class="app" id="app">
       <header class="hero">
         <div class="hero-inner">
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/>
+                <path d="M4.5 4.5l2.1 2.1"/><path d="M17.4 17.4l2.1 2.1"/>
+                <path d="M19.5 4.5l-2.1 2.1"/><path d="M6.6 17.4l-2.1 2.1"/>
+              </g>
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </button>
           <a class="brand" href="index.html" aria-label="Reel Index — home">
             <div class="brand-mark" aria-hidden="true">
               <svg viewBox="0 0 32 32">

@@ -9,6 +9,20 @@
   --line: color-mix(in oklab, var(--fg) 14%, transparent);
   --muted: color-mix(in oklab, var(--fg) 60%, var(--bg));
   --muted-2: color-mix(in oklab, var(--fg) 38%, var(--bg));
+}
+
+:root[data-theme="light"] {
+  --bg: #FAFAF7;
+  --fg: #0E0E0E;
+  --accent: #D7263D;
+  --surface: color-mix(in oklab, var(--fg) 4%, var(--bg));
+  --surface-2: color-mix(in oklab, var(--fg) 8%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 12%, transparent);
+  --muted: color-mix(in oklab, var(--fg) 60%, var(--bg));
+  --muted-2: color-mix(in oklab, var(--fg) 40%, var(--bg));
+}
+
+:root {
 
   --r-sm: 4px;
   --r-md: 8px;
@@ -157,6 +171,34 @@ kbd {
   border-radius: 6px;
   padding: 4px 8px;
   flex-shrink: 0;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-5);
+  z-index: 2;
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease, color 140ms ease;
+}
+.theme-toggle:hover {
+  background: var(--surface-2);
+  border-color: color-mix(in oklab, var(--accent) 50%, var(--line));
+  color: var(--accent);
+}
+.theme-toggle .theme-icon { width: 18px; height: 18px; display: none; }
+:root[data-theme="light"] .theme-toggle .theme-icon-moon { display: block; }
+:root:not([data-theme="light"]) .theme-toggle .theme-icon-sun { display: block; }
+@media (max-width: 600px) {
+  .theme-toggle { top: var(--sp-3); right: var(--sp-3); width: 34px; height: 34px; }
+  .theme-toggle .theme-icon { width: 16px; height: 16px; }
 }
 
 /* Filters row */

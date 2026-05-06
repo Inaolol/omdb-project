@@ -377,6 +377,21 @@
     const isMac = /Mac|iPhone|iPod|iPad/.test((root.navigator && root.navigator.platform) || "");
     if (kbdHint) kbdHint.textContent = isMac ? "⌘K" : "/";
 
+    const themeToggle = doc.getElementById("theme-toggle");
+    const THEME_KEY = "rx.theme";
+    function applyTheme(theme) {
+      if (theme === "light") doc.documentElement.setAttribute("data-theme", "light");
+      else doc.documentElement.removeAttribute("data-theme");
+    }
+    applyTheme(lsGet(THEME_KEY, "dark"));
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const next = doc.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        applyTheme(next);
+        lsSet(THEME_KEY, next);
+      });
+    }
+
     function getKey() {
       try { return ensureApiKey(getApiKey(root)); }
       catch (e) { return null; }
