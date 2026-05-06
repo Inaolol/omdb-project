@@ -85,7 +85,7 @@
   }
 
   async function omdbSearch(query, opts, apiKey, fetchImpl) {
-    const response = await fetchImpl(buildOmdbSearchUrl(apiKey, query, opts || {}));
+    const response = await fetchImpl(buildOmdbSearchUrl(apiKey, query, { ...(opts || {}), page: 1 }));
     if (!response.ok) throw new Error(`The movie service could not be reached. (HTTP ${response.status})`);
     const json = await response.json();
     if (json.Response === "False") {
@@ -97,7 +97,26 @@
           : "API";
       throw error;
     }
-    return { results: json.Search || [], total: Number(json.totalResults) || 0 };
+
+    let results = json.Search || [];
+    const total = Number(json.totalResults) || 0;
+
+    // Fetch page 2 to get 12 cards if we have more than 10 results
+    if (total > 10) {
+      try {
+        const response2 = await fetchImpl(buildOmdbSearchUrl(apiKey, query, { ...(opts || {}), page: 2 }));
+        if (response2.ok) {
+          const json2 = await response2.json();
+          if (json2.Response !== "False" && json2.Search) {
+            results = results.concat(json2.Search).slice(0, 12);
+          }
+        }
+      } catch (e) {
+        // Silently ignore page 2 errors and return the first 10
+      }
+    }
+
+    return { results, total };
   }
 
   async function omdbDetail(imdbID, apiKey, fetchImpl) {
