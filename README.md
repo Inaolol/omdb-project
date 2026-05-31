@@ -13,6 +13,8 @@
 
 [Live demo](https://inaolol.github.io/omdb-project/)
 
+Search starts automatically after typing two or more characters; pressing Enter also runs the current search immediately.
+
 
 
 Note: A free-tier OMDb API key is deliberately included in `config.js` so the live demo works instantly for reviewers. You can use your own key by copying `config.example.js` to `config.js` and updating the value.
@@ -29,7 +31,7 @@ Note: A free-tier OMDb API key is deliberately included in `config.js` so the li
 ## Features
 
 ### Functional
-- **Live Search & Filtering:** Debounced input (380 ms) with filters for type (movie / series / episode) and year—no submit button needed.
+- **Live Search & Filtering:** Debounced input (380 ms) with filters for type (movie / series) and year—no submit button needed.
 - **Rich Movie Details:** Browse a responsive grid of posters, click to view an overlay with full plot, ratings (IMDb, Metacritic, Rotten Tomatoes), and credits.
 - **Persistent State:** Last search query is restored from the `?q=` URL param (enabling shareable links), and recent searches are saved across visits via `localStorage`.
 - **Robust UI States:** Distinct empty, loading (CSS skeleton grid), no-results, and error states with retry/clear actions.
@@ -46,3 +48,9 @@ Note: A free-tier OMDb API key is deliberately included in `config.js` so the li
 
 - **Key in repo.** OMDb free-tier keys are rate-limited per-key (1000 req/day) and trivially rotated. A serverless proxy would defeat "static GitHub Pages deploy." If abused, the key gets rotated; nothing else is at risk.
 - **State as plain variables in a closure.** No state-management library for ~6 fields. The closure inside `initApp` is the state container.
+
+## Run tests
+
+```bash
+npm test
+```
